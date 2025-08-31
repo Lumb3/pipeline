@@ -1,3 +1,6 @@
 build_website:
+  image: alpine
+  before_script:
+    - brew install yarn
   script:
-    - yarn
+    - yarn build 
