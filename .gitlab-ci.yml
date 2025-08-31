@@ -1,5 +1,8 @@
+stages:
+  - build
 build_website:
-  image: alpine
+  image: node:18-alpine
+  stage: build
   before_script:
     - yarn install
   script:
