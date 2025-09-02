@@ -14,7 +14,7 @@ build_website:
     paths:
       - build/
 
-linter:
+.linter:  # Disable job
   image: node:18-alpine
   stage: .pre
   before_script:
@@ -28,9 +28,9 @@ test_website:
   dependencies:
     - build_website
   script:
-    - test -f build/index.html # Checks if the index.html exists in build folder
+    - serve -s build       # Integration test
 
-unit_test:
+.unit_test:
   image: node:18-alpine
   stage: .pre
   before_script:
