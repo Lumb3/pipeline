@@ -16,7 +16,7 @@ build_website:
 test_website:
   image: node:18-alpine
   stage: test
-  before_script:
+  dependencies:
     - build_website
   script:
     - test -f build/index.html   # Checks if the index.html exists in build folder
