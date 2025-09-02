@@ -9,15 +9,22 @@ build_website:
     - yarn install
   script:
     - yarn build 
+  artifacts:
+    paths:
+      - build/
 
 test_website:
   image: node:18-alpine
   stage: test
+  before_script:
+    - build_website
   script:
     - test -f build/index.html   # Checks if the index.html exists in build folder
 
 unit_test:
   image: node:18-alpine
   stage: unit
+  before_script:
+    - yarn install
   script:
     - yarn test
