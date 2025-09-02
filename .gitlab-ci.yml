@@ -1,9 +1,23 @@
 stages:
   - build
+  - test
+  - unit
 build_website:
-  image: node:18-alpine
+  image: node:18-alpine  # node installed alpine docker image
   stage: build
   before_script:
     - yarn install
   script:
     - yarn build 
+
+test_website:
+  image: node:18-alpine
+  stage: test
+  script:
+    - test -f build/index.html   # Checks if the index.html exists in build folder
+
+unit_test:
+  image: node:18-alpine
+  stage: unit
+  script:
+    - yarn test
