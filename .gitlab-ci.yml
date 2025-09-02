@@ -1,16 +1,26 @@
 stages:
+  - .pre
   - build
   - test
+
 build_website:
-  image: node:18-alpine  # node installed alpine docker image
+  image: node:18-alpine # node installed alpine docker image
   stage: build
   before_script:
     - yarn install
   script:
-    - yarn build 
+    - yarn build
   artifacts:
     paths:
       - build/
+
+linter:
+  image: node:18-alpine
+  stage: .pre
+  before_script:
+    - yarn install
+  script:
+    - yarn lint
 
 test_website:
   image: alpine
@@ -18,12 +28,12 @@ test_website:
   dependencies:
     - build_website
   script:
-    - test -f build/index.html   # Checks if the index.html exists in build folder
+    - test -f build/index.html # Checks if the index.html exists in build folder
 
 unit_test:
   image: node:18-alpine
-  stage: test
+  stage: .pre
   before_script:
     - yarn install
   script:
-    - yarn test 
+    - yarn test
