@@ -27,6 +27,8 @@ test_website:
   stage: test
   dependencies:
     - build_website
+  before_script:
+    - yarn global add serve
   script:
     - serve -s build       # Integration test
 
