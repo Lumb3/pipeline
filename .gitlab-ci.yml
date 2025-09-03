@@ -21,7 +21,7 @@ linter: # Disabled job
   stage: .pre
   script:
     - yarn lint
-
+# final change
 test_website:
   image: node:18-alpine
   stage: test
