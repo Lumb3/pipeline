@@ -15,7 +15,7 @@ build_website:
   artifacts:
     paths:
       - build/
-
+# edited
 linter: # Disabled job
   image: node:18-alpine
   stage: .pre
