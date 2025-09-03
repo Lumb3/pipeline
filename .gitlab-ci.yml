@@ -14,7 +14,7 @@ build_website:
     paths:
       - build/
 
-.linter:  # Disable job
+.linter: # Disable job
   image: node:18-alpine
   stage: .pre
   before_script:
@@ -28,10 +28,13 @@ test_website:
   dependencies:
     - build_website
   before_script:
-    - yarn global add serve
+    - yarn install
+    - apk add curl
+      - yarn global add serve
   script:
-    - serve -s build       # Integration test
-
+    - serve -s build & # Run this command in the background
+    - sleep 10 # Sleep for 10 seconds
+    - curl http://localhost:3000 | grep "Learn GitLab CI"
 .unit_test:
   image: node:18-alpine
   stage: .pre
