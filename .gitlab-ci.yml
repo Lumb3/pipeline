@@ -15,13 +15,13 @@ build_website:
   artifacts:
     paths:
       - build/
-
-.linter: # Disabled job
+      - running-all-jobs
+linter: # Disabled job
   image: node:18-alpine
   stage: .pre
   script:
     - yarn lint
-
+# final change
 test_website:
   image: node:18-alpine
   stage: test
@@ -40,3 +40,4 @@ test_website:
   stage: .pre
   script:
     - yarn test
+# All gonna work now
