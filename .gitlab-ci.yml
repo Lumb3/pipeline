@@ -23,7 +23,7 @@ build_website:
     - yarn lint
 
 test_website:
-  image: alpine
+  image: node:18-alpine
   stage: test
   dependencies:
     - build_website
@@ -33,7 +33,7 @@ test_website:
   script:
     - serve -s build & # Run this command in the background
     - sleep 10 # Sleep for 10 seconds
-    - curl http://localhost:3000 | grep "Learn GitLab CI"
+    - curl http://localhost:3000 | grep "React App"
 
 .unit_test: # Disabled job
   image: node:18-alpine
