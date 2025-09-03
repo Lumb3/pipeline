@@ -2,23 +2,23 @@ stages:
   - .pre
   - build
   - test
+default:
+  interruptible: false
+  before_script:
+    - yarn install
 
 build_website:
   image: node:18-alpine # node installed alpine docker image
   stage: build
-  before_script:
-    - yarn install
   script:
     - yarn build
   artifacts:
     paths:
       - build/
 
-.linter: # Disable job
+.linter: # Disabled job
   image: node:18-alpine
   stage: .pre
-  before_script:
-    - yarn install
   script:
     - yarn lint
 
@@ -28,17 +28,15 @@ test_website:
   dependencies:
     - build_website
   before_script:
-    - yarn install
     - apk add curl
-      - yarn global add serve
+    - yarn global add serve
   script:
     - serve -s build & # Run this command in the background
     - sleep 10 # Sleep for 10 seconds
     - curl http://localhost:3000 | grep "Learn GitLab CI"
-.unit_test:
+
+.unit_test: # Disabled job
   image: node:18-alpine
   stage: .pre
-  before_script:
-    - yarn install
   script:
     - yarn test
