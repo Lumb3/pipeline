@@ -15,7 +15,7 @@ build_website:
   artifacts:
     paths:
       - build/
-# edited
+      - running-all-jobs
 linter: # Disabled job
   image: node:18-alpine
   stage: .pre
@@ -35,7 +35,7 @@ test_website:
     - sleep 10 # Sleep for 10 seconds
     - curl -s http://localhost:3000 | grep "React App"
 
-unit_test: # Disabled job
+.unit_test: # Disabled job
   image: node:18-alpine
   stage: .pre
   script:
