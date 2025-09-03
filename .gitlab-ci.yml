@@ -40,4 +40,4 @@ unit_test: # Disabled job
   stage: .pre
   script:
     - yarn test
-# All gonna work
+# All gonna work now
