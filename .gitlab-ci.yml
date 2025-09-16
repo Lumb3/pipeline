@@ -19,12 +19,13 @@ build_website:
   artifacts:
     paths:
       - build/
-
-.linter: # Disabled job
+      - running-all-jobs
+linter: # Disabled job
   image: node:18-alpine
   stage: .pre
   script:
     - $PACKAGE_MANAGER lint
+
 
 test_website:
   image: node:18-alpine
@@ -44,3 +45,5 @@ test_website:
   stage: .pre
   script:
     - $PACKAGE_MANAGER test
+
+
