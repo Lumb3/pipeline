@@ -8,6 +8,7 @@ default:
   interruptible: false
   before_script:
     - yarn install
+    - yarn add --dev jest-junit
 
 # Global variables
 variables:
@@ -22,7 +23,7 @@ unit_test_website:
     - $PACKAGE_MANAGER test --ci --watchAll=false --reporters=default --reporters=jest-junit
   artifacts:
     reports:
-      junit: junit.xml
+      junit: reports/junit.xml
 
 # Linter job
 linter_website:
