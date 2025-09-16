@@ -1,51 +1,56 @@
 stages:
-  - .pre
+  - pre
   - build
   - test
+
+# Default settings for all jobs
 default:
   interruptible: false
   before_script:
     - yarn install
 
-unit_test_website:  # Collect Test Reports
+# Global variables
+variables:
+  NODE_ENV: test
+  PACKAGE_MANAGER: yarn
+
+# Unit tests job
+unit_test_website:
   image: node:18-alpine
-  stage: .pre
+  stage: pre
   script:
-    - $PACKAGE_MANAGER test --ci --reporters=default --reporters=jest-junit
+    - $PACKAGE_MANAGER test --ci --watchAll=false --reporters=default --reporters=jest-junit
   artifacts:
     reports:
       junit: junit.xml
 
-linter_website: 
+# Linter job
+linter_website:
   image: node:18-alpine
-  stage: .pre
+  stage: pre
   script:
     - $PACKAGE_MANAGER lint
 
-variables:
-  Node_END: test
-  PACKAGE_MANAGER: yarn
-
+# Build job
 build_website:
-  image: node:18-alpine # node installed alpine docker image
+  image: node:18-alpine
   stage: build
   script:
     - $PACKAGE_MANAGER build
   artifacts:
     paths:
-      - build/
-      - running-all-jobs
+      - build/ # Make sure this folder exists after build
 
+# Test the built website
 test_website:
   image: node:18-alpine
   stage: test
   dependencies:
     - build_website
   before_script:
-    - apk add curl
-    - $PACKAGE_MANAGER global add serve
+    - apk add --no-cache curl
+    - npm install -g serve
   script:
-    - serve -s build & # Run this command in the background
-    - sleep 10 # Sleep for 10 seconds
+    - serve -s build -l 3000 & # Serve build folder on port 3000
+    - sleep 10 # Give server time to start
     - curl -s http://localhost:3000 | grep "React App"
-
