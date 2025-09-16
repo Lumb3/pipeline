@@ -7,6 +7,21 @@ default:
   before_script:
     - yarn install
 
+unit_test_website:  # Collect Test Reports
+  image: node:18-alpine
+  stage: .pre
+  script:
+    - $PACKAGE_MANAGER test --ci --reporters=default --reporters=jest-junit
+  artifacts:
+    reports:
+      junit: junit.xml
+
+linter_website: 
+  image: node:18-alpine
+  stage: .pre
+  script:
+    - $PACKAGE_MANAGER lint
+
 variables:
   Node_END: test
   PACKAGE_MANAGER: yarn
@@ -20,12 +35,6 @@ build_website:
     paths:
       - build/
       - running-all-jobs
-linter: # Disabled job
-  image: node:18-alpine
-  stage: .pre
-  script:
-    - $PACKAGE_MANAGER lint
-
 
 test_website:
   image: node:18-alpine
@@ -40,8 +49,3 @@ test_website:
     - sleep 10 # Sleep for 10 seconds
     - curl -s http://localhost:3000 | grep "React App"
 
-.unit_test: # Disabled job
-  image: node:18-alpine
-  stage: .pre
-  script:
-    - $PACKAGE_MANAGER test
