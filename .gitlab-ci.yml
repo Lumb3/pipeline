@@ -7,11 +7,15 @@ default:
   before_script:
     - yarn install
 
+variables:
+  Node_END: test
+  PACKAGE_MANAGER: yarn
+
 build_website:
   image: node:18-alpine # node installed alpine docker image
   stage: build
   script:
-    - yarn build
+    - $PACKAGE_MANAGER build
   artifacts:
     paths:
       - build/
@@ -20,8 +24,9 @@ linter: # Disabled job
   image: node:18-alpine
   stage: .pre
   script:
-    - yarn lint
-# final change
+    - $PACKAGE_MANAGER lint
+
+
 test_website:
   image: node:18-alpine
   stage: test
@@ -29,7 +34,7 @@ test_website:
     - build_website
   before_script:
     - apk add curl
-    - yarn global add serve
+    - $PACKAGE_MANAGER global add serve
   script:
     - serve -s build & # Run this command in the background
     - sleep 10 # Sleep for 10 seconds
@@ -39,5 +44,6 @@ test_website:
   image: node:18-alpine
   stage: .pre
   script:
-    - yarn test
-# All gonna work now
+    - $PACKAGE_MANAGER test
+
+
